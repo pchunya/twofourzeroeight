@@ -28,6 +28,11 @@ namespace twozerofoureight
         public void Notify(Model m)
         {
             UpdateBoard(((TwoZeroFourEightModel) m).GetBoard());
+            score.Text = "Score: " + ((TwoZeroFourEightModel)m).Get_Score();
+            if(m.isEnd)
+            {
+                GameOver();
+            }
         }
 
         private void UpdateTile(Label l, int i)
@@ -77,6 +82,34 @@ namespace twozerofoureight
             UpdateTile(lbl33,board[3, 3]);
         }
 
+        private void btn_KeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyCode == Keys.Left)
+            {
+                btnLeft.Focus();
+                btnLeft.PerformClick();
+                e.IsInputKey = true;
+            }
+            else if (e.KeyCode == Keys.Right)
+            {
+                btnRight.Focus();
+                btnRight.PerformClick();
+                e.IsInputKey = true;
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                btnDown.Focus();
+                btnDown.PerformClick();
+                e.IsInputKey = true;
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                btnUp.Focus();
+                btnUp.PerformClick();
+                e.IsInputKey = true;
+            }
+        }
+
         private void btnLeft_Click(object sender, EventArgs e)
         {
             controller.ActionPerformed(TwoZeroFourEightController.LEFT);
@@ -97,5 +130,13 @@ namespace twozerofoureight
             controller.ActionPerformed(TwoZeroFourEightController.DOWN);
         }
 
+        private void lbl10_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void GameOver()
+        {
+            MessageBox.Show("Game Over");
+        }
     }
 }

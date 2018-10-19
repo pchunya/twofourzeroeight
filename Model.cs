@@ -9,6 +9,7 @@ namespace twozerofoureight
 {
     public class Model
     {
+        public bool isEnd;
         protected ArrayList oList;
 
         public Model()

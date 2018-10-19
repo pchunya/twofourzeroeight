@@ -11,7 +11,12 @@ namespace twozerofoureight
         protected int boardSize; // default is 4
         protected int[,] board;
         protected Random rand;
+        public int score = 0;
 
+        public string Get_Score()
+        {
+            return score.ToString();
+        }
         public TwoZeroFourEightModel() : this(4)
         {
             // default board size is 4 
@@ -30,6 +35,7 @@ namespace twozerofoureight
             rand = new Random();
             board = Random(board);
             NotifyAll();
+            if (BoardFull()) isEnd= EndGame();
         }
 
         public int[,] GetBoard()
@@ -39,7 +45,7 @@ namespace twozerofoureight
 
         private int[,] Random(int[,] input)
         {
-            while (true)
+            while (!BoardFull())
             {
                 int x = rand.Next(boardSize);
                 int y = rand.Next(boardSize);
@@ -82,6 +88,7 @@ namespace twozerofoureight
                     if (j > 0 && buffer[j] != 0 && buffer[j] == buffer[j - 1])
                     {
                         buffer[j - 1] *= 2;
+                        score += buffer[j - 1];
                         buffer[j] = 0;
                     }
                 }
@@ -103,6 +110,7 @@ namespace twozerofoureight
             }
             board = Random(board);
             NotifyAll();
+            if (BoardFull()) isEnd= EndGame();
         }
 
         public void PerformUp()
@@ -134,6 +142,7 @@ namespace twozerofoureight
                     if (j > 0 && buffer[j] != 0 && buffer[j] == buffer[j - 1])
                     {
                         buffer[j - 1] *= 2;
+                        score += buffer[j - 1];
                         buffer[j] = 0;
                     }
                 }
@@ -155,6 +164,7 @@ namespace twozerofoureight
             }
             board = Random(board);
             NotifyAll();
+            if (BoardFull()) isEnd= EndGame();
         }
 
         public void PerformRight()
@@ -188,6 +198,7 @@ namespace twozerofoureight
                     if (j > 0 && buffer[j] != 0 && buffer[j] == buffer[j - 1])
                     {
                         buffer[j - 1] *= 2;
+                        score += buffer[j - 1];
                         buffer[j] = 0;
                     }
                 }
@@ -209,6 +220,7 @@ namespace twozerofoureight
             }
             board = Random(board);
             NotifyAll();
+            if (BoardFull()) isEnd= EndGame();
         }
 
         public void PerformLeft()
@@ -239,6 +251,7 @@ namespace twozerofoureight
                     if (j > 0 && buffer[j] != 0 && buffer[j] == buffer[j - 1])
                     {
                         buffer[j - 1] *= 2;
+                        score += buffer[j - 1];
                         buffer[j] = 0;
                     }
                 }
@@ -259,6 +272,43 @@ namespace twozerofoureight
             }
             board = Random(board);
             NotifyAll();
+            if (BoardFull()) isEnd= EndGame();
         }
+        public bool BoardFull()
+        {
+            int count = 0;
+            for(int i = 0; i < 4; i++)
+            {
+                for(int j = 0; j < 4; j++)
+                {
+                    if(board[i, j] > 0) count ++;
+                }
+            }
+            if (count == 16) return true;
+            else return false;
+        }
+        public bool EndGame()
+        {
+            for(int i = 0; i < 4; i++)
+            {
+                for(int j = 0; j < 4; j++)
+                {
+                    if (i != 3 && j != 3)
+                    {
+                        if (board[i, j] == board[i + 1, j] || board[i, j] == board[i, j + 1]) return false;
+                    }
+                    else if (i != 3 && j == 3)
+                    {
+                        if (board[i, j] == board[i + 1, j]) return false;
+                    }
+                    else if (i == 3 && j != 3)
+                    {
+                        if (board[i, j] == board[i, j + 1]) return false;
+                    }
+                }
+            }
+            return true;
+        }
+
     }
 }
